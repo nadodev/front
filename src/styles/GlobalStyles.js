@@ -23,10 +23,10 @@ button{
 }
 `;
 export const Container = styled.section`
-  max-width: 360px;
+  max-width: 600px;
   padding: 10px;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
+  margin: 50px auto;
 `;
