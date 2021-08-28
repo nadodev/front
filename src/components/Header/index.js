@@ -15,7 +15,7 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/">
+            <Link to="/register">
               <FaAngleRight />
               Cadastrar
             </Link>
