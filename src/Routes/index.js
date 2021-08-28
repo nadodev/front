@@ -25,7 +25,7 @@ export default function Routes() {
           path="/funcionarios"
           exact
           component={Funcionarios}
-          isClosed
+          isClosed={false}
         />
         <MyRoutes path="/avatar/:id" exact component={Avatar} isClosed />
         <MyRoutes path="*" exact component={Page404} />
