@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { primaryColor } from '../../config/colors';
 
 export const Container = styled.div`
   display: flex;
@@ -22,6 +23,9 @@ export const Func = styled.div`
     width: 50px;
     height: 50px;
     margin: 0 20px;
+    @media (max-width: 500px) {
+      margin: 0;
+    }
   }
   .Content {
     padding: 10px;
@@ -30,21 +34,27 @@ export const Func = styled.div`
     border-bottom: 1px dashed #1111;
     align-items: center;
     justify-content: space-between;
-    align-content: space-between;
+    align-content: flex-start;
     .imgContainer {
-      text-align: center;
       width: 20%;
-      svg {
+      @media (max-width: 500px) {
+        width: 10%;
       }
     }
     .funcName {
       width: 20%;
+      @media (max-width: 500px) {
+        width: 10%;
+      }
     }
     .conhecimentos {
       width: 20%;
       p {
         font-size: 12px;
         font-style: italic;
+      }
+      @media (max-width: 500px) {
+        width: 10%;
       }
     }
     .status {
@@ -56,6 +66,14 @@ export const Func = styled.div`
       .inativo {
         color: red;
         font-weight: bold;
+      }
+      svg {
+        color: ${primaryColor};
+        margin-left: 10px;
+      }
+      @media (max-width: 500px) {
+        font-size: 13px;
+        width: 50px;
       }
     }
   }

@@ -1,7 +1,8 @@
 /* eslint-disable no-template-curly-in-string */
 import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaEdit, FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import * as S from './styled';
 import { Container } from '../../styles/GlobalStyles';
 import axios from '../../services/axios';
@@ -39,6 +40,14 @@ export default function Funcionarios() {
                 ) : (
                   <span className="inativo">Inativo</span>
                 )}
+              </div>
+              <div className="status">
+                <Link to={`/func/${resp.id}/edit`}>
+                  <FaEdit />
+                </Link>
+                <Link to={`/func/${resp.id}/edit`}>
+                  <FaTrash />
+                </Link>
               </div>
             </div>
           ))}

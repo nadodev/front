@@ -25,7 +25,8 @@ button{
 }
 `;
 export const Container = styled.section`
-  max-width: 600px;
+  max-width: 100%;
+  width: 1150px;
   padding: 10px;
   background-color: #fff;
   border-radius: 4px;

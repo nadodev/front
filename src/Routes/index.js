@@ -7,6 +7,7 @@ import { GlobalStyle } from '../styles/GlobalStyles';
 import Registrar from '../pages/Register';
 import Funcionarios from '../pages/Funcionarios';
 import Avatar from '../pages/Avatar';
+import Func from '../pages/Func';
 
 export default function Routes() {
   return (
@@ -16,11 +17,7 @@ export default function Routes() {
       <Switch>
         <MyRoutes path="/" exact component={Login} isClosed={false} />
         <MyRoutes path="/register" exact component={Registrar} />
-        <MyRoutes
-          path="/funcionarios/:id/edit"
-          component={Funcionarios}
-          isClosed
-        />
+        <MyRoutes path="/func/:id/edit" component={Func} isClosed />
         <MyRoutes
           path="/funcionarios"
           exact
