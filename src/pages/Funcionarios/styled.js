@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { primaryColor } from '../../config/colors';
 
 export const Container = styled.div`
@@ -78,3 +79,4 @@ export const Func = styled.div`
     }
   }
 `;
+export const Links = styled(Link)``;

@@ -53,6 +53,7 @@ export const Nav = styled.nav`
 
 export const Logo = styled.div`
   margin: 0 30px;
+  color: white;
   h1 {
     font-size: 30px;
   }

@@ -1,23 +1,21 @@
-/* eslint-disable import/no-duplicates */
-/* eslint-disable no-shadow */
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
 import { get } from 'lodash';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../../store/modules/auth/actions';
+import Loading from '../../components/Loading';
+
 import * as S from './styled';
 import { Container } from '../../styles/GlobalStyles';
-import axios from '../../services/axios';
-import * as actions from '../../store/modules/auth/actions';
 
 export default function Login(props) {
+  const history = useHistory();
   const dispath = useDispatch();
 
-  const prevPath = get(props, 'location.state.prevPath', '/');
-  const history = useHistory();
+  const prevPath = get(props, 'location.state.prevPath', '/funcionarios');
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const [email, setEmail] = useState('');
 
   const [password, setPassword] = useState('');
@@ -25,18 +23,21 @@ export default function Login(props) {
   async function handleSubmit(e) {
     e.preventDefault();
     const formsErros = false;
+
     if (password.length < 3 || password.length > 100) {
       toast.error('Senha deve ter entre 3 e 100 caracteres');
     } else if (!isEmail(email)) {
       toast.error('Email invalido');
     }
-    if (formsErros) return;
 
+    if (formsErros) return;
+    history.push('/funcionarios');
     dispath(actions.loginRequest({ email, password, prevPath }));
   }
   return (
     <Container>
       <S.Container>
+        <Loading isLoading={isLoading} />
         <h1>Formulario Para Login</h1>
         <S.Form onSubmit={handleSubmit}>
           <div className="formControl">

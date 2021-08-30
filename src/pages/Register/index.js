@@ -1,66 +1,65 @@
-/* eslint-disable import/no-duplicates */
-/* eslint-disable no-shadow */
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
-import InputMask from 'react-input-mask';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
-import { get } from 'lodash';
-import { useHistory } from 'react-router-dom';
 import * as S from './styled';
 import { Container } from '../../styles/GlobalStyles';
-import axios from '../../services/axios';
+import Loading from '../../components/Loading';
+import * as actions from '../../store/modules/auth/actions';
 
 export default function Registrar() {
-  const history = useHistory();
-  const [name, setNome] = useState('');
+  const dispath = useDispatch();
+
+  const id = useSelector((state) => state.auth.user.id);
+  const nomeUser = useSelector((state) => state.auth.user.nome);
+  const emailUser = useSelector((state) => state.auth.user.email);
+  const passwordUser = useSelector((state) => state.auth.user.password);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
-  const [celular, setCelular] = useState('');
-  const [conhecimentos, setConhecimentos] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
     let formsErros = false;
-    if (name.length < 3 || name.length > 100) {
+
+    if (nome.length < 3 || nome.length > 100) {
       formsErros = true;
       toast.error('Nome deve ter entre 3 e 100 caracteres');
-    } else if (password.length < 3 || password.length > 100) {
-      toast.error('Senha deve ter entre 3 e 100 caracteres');
-    } else if (!isEmail(email)) {
+    }
+    if (!isEmail(email)) {
       toast.error('Email invalido');
     }
-    if (formsErros) return;
 
-    try {
-      await axios.post('/func', {
-        name,
-        email,
-        password,
-        celular,
-        cpf,
-        conhecimentos,
-      });
-
-      toast.success('Seu cadastro foi efetuado com sucesso');
-      history.push('/');
-    } catch (error) {
-      const errors = get(error, 'response.data.errors', []);
-      errors.map((error) => toast.error(error));
+    if (!id && (password.length < 6 || password.length > 50)) {
+      formsErros = true;
+      toast.error('Senha deve ter entre 3 e 50 caracteres');
     }
+
+    if (formsErros) return true;
+
+    dispath(actions.registerRequest({ id, nome, email, password }));
   }
+
+  useEffect(() => {
+    if (!id) return;
+    setNome(nomeUser);
+    setEmail(emailUser);
+    setPassword(passwordUser);
+  }, [nomeUser, emailUser, passwordUser]);
+
   return (
     <Container>
       <S.Container>
-        <h1>Formulario Para Cadastro</h1>
+        <Loading isLoading={isLoading} />
+        <h1> {id ? 'Editar dados ' : 'Formulario Para Cadastro'}</h1>
         <S.Form onSubmit={handleSubmit}>
           <div className="formControl">
             <label htmlFor="Nome">Nome </label>
             <input
               type="text"
-              value={name}
+              value={nome}
               placeholder="Nome"
               onChange={(e) => setNome(e.target.value)}
             />
@@ -75,44 +74,16 @@ export default function Registrar() {
             />
           </div>
           <div className="formControl">
-            <label htmlFor="Senha">Senha </label>
+            <label htmlFor="Email">Senha </label>
             <input
               type="password"
               value={password}
-              placeholder="senha"
+              placeholder="Senha"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="formControl">
-            <label htmlFor="CPF">CPF </label>
-            <InputMask
-              type="text"
-              mask="999.999.999-99"
-              value={cpf}
-              placeholder="CPF"
-              onChange={(e) => setCpf(e.target.value)}
-            />
-          </div>
-          <div className="formControl">
-            <label htmlFor="Celular">Celular </label>
-            <InputMask
-              mask="(99)99999-9999"
-              type="text"
-              value={celular}
-              placeholder="Celular"
-              onChange={(e) => setCelular(e.target.value)}
-            />
-          </div>
-          <div className="formControl">
-            <label htmlFor="conhecimentos">Conhecimentos </label>
-            <input
-              type="text"
-              value={conhecimentos}
-              placeholder="Conhecimentos"
-              onChange={(e) => setConhecimentos(e.target.value)}
-            />
-          </div>
-          <button type="submit">Cadastrar</button>
+
+          <button type="submit">{id ? 'Salvar' : 'Criar Conta'}</button>
         </S.Form>
       </S.Container>
     </Container>
